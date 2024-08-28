@@ -1,55 +1,56 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_9_10/provider/data.dart';
+import 'package:flutter_9_10/controller/counter_controller.dart';
 import 'package:flutter_9_10/second_page.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final controller = Get.put(CounterController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Home Page'),
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // State
-            Text(
-              'Data of state = ${context.watch<DataState>().count}',
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 26,
-              ),
+    return GetBuilder<CounterController>(
+      init: controller,
+      builder: (counter) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Home Page'),
+          ),
+          body: SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to the Home Page!',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  counter.count.value.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .apply(fontSizeDelta: 18),
+                ),
+                const SizedBox(height: 16),
+                GestureDetector(
+                  onTap: ()=> Get.to(SecondPage()),
+                  child: Text(
+                    'Watch next page.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ],
             ),
-            // goto second page
-            CupertinoButton(
-              color: Colors.indigo[800],
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SecondPage(),
-                ),
-              ),
-              child: const Text(
-                'Watch Second page',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<DataState>().incrementCount(),
-        child: const Icon(Icons.add),
-      ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async => counter.increment(),
+            child: const Icon(Icons.add),
+          ),
+        );
+      }
     );
   }
 }
