@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_9_10/db/db.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
+
+  final db = DB();
 
   @override
   Widget build(BuildContext context) {
@@ -19,32 +24,20 @@ class HomePage extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 5,
-                    child: SizedBox(
+                    child: Container(
                       height: 50,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(left: 16),
+                      decoration: BoxDecoration(
+                        border:Border.all(color:  Colors.indigo.shade800),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: TextField(
                         style: Theme.of(context).textTheme.bodySmall,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Colors.indigo.shade800,
-                              width: 1.5,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Colors.indigo.shade800,
-                              width: 1.5,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Colors.indigo.shade800,
-                              width: 1.5,
-                            ),
-                          ),
+                          border: InputBorder.none,
+                          hintText: 'Add a task',
+                          hintStyle: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ),
@@ -52,19 +45,24 @@ class HomePage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 2,
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.indigo.shade800,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        'Save',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .apply(color: Colors.white),
+                    child: GestureDetector(
+                      onTap: () {
+                        db.init().then((value) => log("$value")).whenComplete(() => log("Okay"));
+                      },
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.indigo.shade800,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          'Save',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .apply(color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
