@@ -1,71 +1,121 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_9_10/controller/counter_controller.dart';
-import 'package:flutter_9_10/second_page.dart';
-import 'package:flutter_9_10/store/pref.dart';
-import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  final controller = Get.put(CounterController());
-  final pref = Pref();
-
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CounterController>(
-        init: controller,
-        builder: (counter) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Home Page'),
-            ),
-            body: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('To Do List'),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(top: 64, left: 32, right: 32),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    'Welcome to the Home Page!',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    counter.count.value.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .apply(fontSizeDelta: 18),
-                  ),
-                  const SizedBox(height: 16),
-                  CupertinoButton(
-                    color: Colors.indigo[800],
-                    onPressed: () async => await pref.setInt(controller.count.value).whenComplete(() => log("Saved Successfully")),
-                    child: Text(
-                      'Save Counter',
-                      style: Theme.of(context).textTheme.bodySmall!.apply(
-                        color: Colors.white
+                  Expanded(
+                    flex: 5,
+                    child: SizedBox(
+                      height: 50,
+                      child: TextField(
+                        style: Theme.of(context).textTheme.bodySmall,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.indigo.shade800,
+                              width: 1.5,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.indigo.shade800,
+                              width: 1.5,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.indigo.shade800,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  GestureDetector(
-                    onTap: () => Get.to(SecondPage()),
-                    child: Text(
-                      'Watch next page.',
-                      style: Theme.of(context).textTheme.bodySmall,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.indigo.shade800,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'Save',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .apply(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 32),
+              ...List.generate(
+                20,
+                (index) => card("Card simple"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container card(String data) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            data,
+            style: const TextStyle(
+              fontSize: 16,
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async => counter.increment(),
-              child: const Icon(Icons.add),
-            ),
-          );
-        });
+          ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.indigo[800],
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
