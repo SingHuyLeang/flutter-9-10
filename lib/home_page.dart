@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_9_10/db/db.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final db = DB();
-
+  final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +30,11 @@ class HomePage extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.only(left: 16),
                       decoration: BoxDecoration(
-                        border:Border.all(color:  Colors.indigo.shade800),
+                        border: Border.all(color: Colors.indigo.shade800),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: TextField(
+                        controller: textController,
                         style: Theme.of(context).textTheme.bodySmall,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -46,8 +48,23 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: () {
-                        db.init().then((value) => log("$value")).whenComplete(() => log("Okay"));
+                      onTap: () async {
+                        if (textController.text.isEmpty) {
+                          Get.showSnackbar(const GetSnackBar(
+                            message: "Please enter task!",
+                            duration: Duration(milliseconds: 800),
+                          ));
+                        } else if (await db.addTask(textController.text)) {
+                          Get.showSnackbar(const GetSnackBar(
+                            message: "Add Success",
+                            duration: Duration(milliseconds: 800),
+                          ));
+                        } else {
+                          Get.showSnackbar(const GetSnackBar(
+                            message: "Add Failed",
+                            duration: Duration(milliseconds: 800),
+                          ));
+                        }
                       },
                       child: Container(
                         height: 50,
