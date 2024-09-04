@@ -1,16 +1,45 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_9_10/db/db.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final db = DB();
   final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder<List<String>>(
+        stream: db.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 40,
+              ),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          } else if (snapshot.hasData) {
+            return app(context, snapshot.data!);
+          } else {
+            return const Center(
+              child: Text('No tasks found.'),
+            );
+          }
+        });
+  }
+
+  Scaffold app(BuildContext context, List<String> tasks) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('To Do List'),
@@ -59,6 +88,9 @@ class HomePage extends StatelessWidget {
                             message: "Add Success",
                             duration: Duration(milliseconds: 800),
                           ));
+                          setState(() {
+                            textController.clear();
+                          });
                         } else {
                           Get.showSnackbar(const GetSnackBar(
                             message: "Add Failed",
@@ -87,8 +119,8 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               ...List.generate(
-                20,
-                (index) => card("Card simple"),
+                tasks.length,
+                (index) => card(tasks[index]),
               ),
             ],
           ),

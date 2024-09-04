@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,6 +9,8 @@ class DB {
   final String table = "tasks";
   final String id = "id";
   final String task = "task";
+
+  Stream<List<String>> get stream => Stream.fromFuture(getTasks());
 
   Future<Database> init() async {
     try {
@@ -37,5 +40,11 @@ class DB {
       log('Error adding task: $e');
     }
     return i > 0;
+  }
+
+  Future<List<String>> getTasks() async {
+    final db = await init();
+    final data = await db.rawQuery("SELECT * FROM $table");
+    return data.map((e) => e[task].toString()).toList();
   }
 }
