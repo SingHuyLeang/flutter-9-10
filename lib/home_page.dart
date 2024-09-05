@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_9_10/data/note.dart';
 import 'package:flutter_9_10/db/db.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<String>>(
+    return StreamBuilder<List<Note>>(
         stream: db.stream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Scaffold app(BuildContext context, List<String> tasks) {
+  Scaffold app(BuildContext context, List<Note> notes) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('To Do List'),
@@ -119,8 +120,8 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 32),
               ...List.generate(
-                tasks.length,
-                (index) => card(tasks[index]),
+                notes.length,
+                (index) => card(notes[index]),
               ),
             ],
           ),
@@ -129,7 +130,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container card(String data) {
+  Container card(Note note) {
     return Container(
       width: double.infinity,
       height: 50,
@@ -138,7 +139,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            data,
+            note.task,
             style: const TextStyle(
               fontSize: 16,
             ),
@@ -146,7 +147,8 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () =>
+                    textController.text = '${note.id} - ${note.task}',
                 icon: Icon(
                   Icons.edit,
                   color: Colors.indigo[800],

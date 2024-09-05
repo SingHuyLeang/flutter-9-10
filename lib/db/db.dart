@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter_9_10/data/note.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -10,7 +11,7 @@ class DB {
   final String id = "id";
   final String task = "task";
 
-  Stream<List<String>> get stream => Stream.fromFuture(getTasks());
+  Stream<List<Note>> get stream => Stream.fromFuture(getTasks());
 
   Future<Database> init() async {
     try {
@@ -42,9 +43,9 @@ class DB {
     return i > 0;
   }
 
-  Future<List<String>> getTasks() async {
+  Future<List<Note>> getTasks() async {
     final db = await init();
     final data = await db.rawQuery("SELECT * FROM $table");
-    return data.map((e) => e[task].toString()).toList();
+    return data.map((e) => Note.fromMap(e)).toList();
   }
 }
