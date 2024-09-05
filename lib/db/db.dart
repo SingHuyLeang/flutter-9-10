@@ -48,4 +48,15 @@ class DB {
     final data = await db.rawQuery("SELECT * FROM $table");
     return data.map((e) => Note.fromMap(e)).toList();
   }
+
+  Future<bool> updateTask(Note note) async {
+    final db = await init();
+    int i = await db.update(
+      table,
+      {task: note.task},
+      where: "$id = ?",
+      whereArgs: [note.id],
+    );
+    return i > 0;
+  }
 }

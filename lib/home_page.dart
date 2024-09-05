@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final db = DB();
   final textController = TextEditingController();
+  int tId = -0;
+  bool isUpdate = false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Note>>(
@@ -79,24 +81,47 @@ class _HomePageState extends State<HomePage> {
                     flex: 2,
                     child: GestureDetector(
                       onTap: () async {
-                        if (textController.text.isEmpty) {
-                          Get.showSnackbar(const GetSnackBar(
-                            message: "Please enter task!",
-                            duration: Duration(milliseconds: 800),
-                          ));
-                        } else if (await db.addTask(textController.text)) {
-                          Get.showSnackbar(const GetSnackBar(
-                            message: "Add Success",
-                            duration: Duration(milliseconds: 800),
-                          ));
-                          setState(() {
-                            textController.clear();
-                          });
+                        if (!isUpdate) {
+                          if (textController.text.isEmpty) {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Please enter task!",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                          } else if (await db.addTask(textController.text)) {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Add Success",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                            setState(() {
+                              textController.clear();
+                            });
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Add Failed",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                          }
                         } else {
-                          Get.showSnackbar(const GetSnackBar(
-                            message: "Add Failed",
-                            duration: Duration(milliseconds: 800),
-                          ));
+                          if (textController.text.isEmpty) {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Please select task!",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                          } else if (await db.updateTask(
+                              Note(id: tId, task: textController.text))) {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Update Success",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                            setState(() {
+                              textController.clear();
+                            });
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: "Update Failed",
+                              duration: Duration(milliseconds: 800),
+                            ));
+                          }
                         }
                       },
                       child: Container(
@@ -107,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          'Save',
+                          "Save",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -147,8 +172,11 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               IconButton(
-                onPressed: () =>
-                    textController.text = '${note.id} - ${note.task}',
+                onPressed: () {
+                  textController.text = note.task;
+                  tId = note.id;
+                  isUpdate = true;
+                },
                 icon: Icon(
                   Icons.edit,
                   color: Colors.indigo[800],
