@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/features/views/screens/components/widgets/text.dart';
+import 'package:note_app/features/views/components/widgets/text.dart';
 
 class HeaderAuth extends StatelessWidget {
   const HeaderAuth({super.key, required this.header, required this.thumnail});

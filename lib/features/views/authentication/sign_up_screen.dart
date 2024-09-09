@@ -1,25 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:note_app/context/context.dart';
-import 'package:note_app/features/views/screens/authentication/components/header.dart';
-import 'package:note_app/features/views/screens/authentication/sign_up_screen.dart';
-import 'package:note_app/features/views/screens/components/button/button.dart';
-import 'package:note_app/features/views/screens/components/fields/text_form.dart';
-import 'package:note_app/features/views/theme/colors.dart';
+import 'package:note_app/database/user_db.dart';
+import 'package:note_app/features/views/authentication/components/header.dart';
+import 'package:note_app/features/views/components/button/button.dart';
+import 'package:note_app/features/views/components/fields/text_form.dart';
+import 'package:note_app/util/theme/colors.dart';
 
 import '../components/widgets/text.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
 
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
+  final db = UserDatabase();
 
-class _SignInScreenState extends State<SignInScreen> {
   final emailCtr = TextEditingController();
   final passCtr = TextEditingController();
+  final conPassCtr = TextEditingController();
 
-  bool toggleSuffix = false; // mean eye is open
+  bool showPass = false; // mean eye is false
+  bool showConPass = false; // mean eye is false
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,9 @@ class _SignInScreenState extends State<SignInScreen> {
             children: <Widget>[
               // -- heaader --
               const HeaderAuth(
-                header: "Sing In",
+                header: "Sing Up",
                 thumnail:
-                    "Please enter your username & password to sign in your account.",
+                    "Please enter your username & password to sign up your account.",
               ),
               // -- form --
               const SizedBox(height: 40),
@@ -51,22 +52,32 @@ class _SignInScreenState extends State<SignInScreen> {
                 controller: passCtr,
                 hint: "Enter your password",
                 prefix: "lock.png",
-                suffix: !toggleSuffix ? "eye.png" : "eye-slash.png",
+                suffix: !showPass ? "eye.png" : "eye-slash.png",
                 keyboard: TextInputType.visiblePassword,
-                hideText: toggleSuffix,
+                hideText: showPass,
                 toggleSuffix: () {
-                  setState(() {
-                    toggleSuffix = !toggleSuffix;
-                  });
+                  showPass = !showPass;
+                },
+              ),
+              const SizedBox(height: 20),
+              NFormField(
+                controller: conPassCtr,
+                hint: "Enter your confirm password",
+                prefix: "lock.png",
+                suffix: !showConPass ? "eye.png" : "eye-slash.png",
+                keyboard: TextInputType.visiblePassword,
+                hideText: showConPass,
+                toggleSuffix: () {
+                  showConPass = !showConPass;
                 },
               ),
               const SizedBox(height: 40),
               // button
               NButton(
-                onTap: () {
-                  // TODO: implement logic
+                onTap: () async {
+                  await db.init().then((value) => log("path : ${value.path}"));
                 },
-                text: "Sign In",
+                text: "Sign Up",
                 width: 180,
               ),
               // switcher
@@ -76,15 +87,14 @@ class _SignInScreenState extends State<SignInScreen> {
                 children: [
                   const NText(text: "Don't have an account?"),
                   TextButton(
-                    onPressed: () => Go.to(context, const SignUpScreen()),
+                    onPressed: () => Go.back(context),
                     child: NText(
-                      text: "Sign Up",
+                      text: "Sign In",
                       color: primary,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
             ],
           ),
         ),

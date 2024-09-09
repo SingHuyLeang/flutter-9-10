@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/context/context.dart';
-import 'package:note_app/features/views/screens/authentication/components/header.dart';
-import 'package:note_app/features/views/screens/components/button/button.dart';
-import 'package:note_app/features/views/screens/components/fields/text_form.dart';
-import 'package:note_app/features/views/theme/colors.dart';
+import 'package:note_app/features/views/authentication/components/header.dart';
+import 'package:note_app/features/views/authentication/sign_up_screen.dart';
+import 'package:note_app/features/views/components/button/button.dart';
+import 'package:note_app/features/views/components/fields/text_form.dart';
+import 'package:note_app/util/theme/colors.dart';
 
 import '../components/widgets/text.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  SignInScreen({super.key});
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
   final emailCtr = TextEditingController();
   final passCtr = TextEditingController();
-  final conPassCtr = TextEditingController();
 
-  bool showPass = false; // mean eye is false
-  bool showConPass = false; // mean eye is false
+  bool toggleSuffix = false; // mean eye is open
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +29,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: <Widget>[
               // -- heaader --
               const HeaderAuth(
-                header: "Sing Up",
+                header: "Sing In",
                 thumnail:
-                    "Please enter your username & password to sign up your account.",
+                    "Please enter your username & password to sign in your account.",
               ),
               // -- form --
               const SizedBox(height: 40),
@@ -52,27 +46,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: passCtr,
                 hint: "Enter your password",
                 prefix: "lock.png",
-                suffix: !showPass ? "eye.png" : "eye-slash.png",
+                suffix: !toggleSuffix ? "eye.png" : "eye-slash.png",
                 keyboard: TextInputType.visiblePassword,
-                hideText: showPass,
+                hideText: toggleSuffix,
                 toggleSuffix: () {
-                  setState(() {
-                    showPass = !showPass;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              NFormField(
-                controller: conPassCtr,
-                hint: "Enter your confirm password",
-                prefix: "lock.png",
-                suffix: !showConPass ? "eye.png" : "eye-slash.png",
-                keyboard: TextInputType.visiblePassword,
-                hideText: showConPass,
-                toggleSuffix: () {
-                  setState(() {
-                    showConPass = !showConPass;
-                  });
+                  toggleSuffix = !toggleSuffix;
                 },
               ),
               const SizedBox(height: 40),
@@ -81,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onTap: () {
                   // TODO: implement logic
                 },
-                text: "Sign Up",
+                text: "Sign In",
                 width: 180,
               ),
               // switcher
@@ -91,11 +69,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   const NText(text: "Don't have an account?"),
                   TextButton(
-                    onPressed: () => Go.back(context),
-                    child: NText(text: "Sign In",color: primary,),
+                    onPressed: () => Go.to(context, SignUpScreen()),
+                    child: NText(
+                      text: "Sign Up",
+                      color: primary,
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

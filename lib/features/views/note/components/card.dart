@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/colors.dart';
+import '../../../../util/theme/colors.dart';
 import '../../components/widgets/text.dart';
 
 Widget card() {

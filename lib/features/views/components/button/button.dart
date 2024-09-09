@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/features/views/screens/components/widgets/text.dart';
-import 'package:note_app/features/views/theme/colors.dart';
+import 'package:note_app/features/views/components/widgets/text.dart';
+import 'package:note_app/util/theme/colors.dart';
 
 class NButton extends StatelessWidget {
   const NButton({

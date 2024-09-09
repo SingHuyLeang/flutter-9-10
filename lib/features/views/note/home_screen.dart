@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/context/context.dart';
-import 'package:note_app/features/views/screens/components/widgets/text.dart';
-import 'package:note_app/features/views/screens/note/add_update_screen.dart';
-import 'package:note_app/features/views/theme/colors.dart';
+import 'package:note_app/features/views/components/widgets/text.dart';
+import 'package:note_app/features/views/note/add_update_screen.dart';
+import 'package:note_app/util/theme/colors.dart';
 
 import 'components/card.dart';
 
