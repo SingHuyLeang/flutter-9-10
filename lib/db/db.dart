@@ -59,4 +59,10 @@ class DB {
     );
     return i > 0;
   }
+
+  Future<bool> deleteTask(int id) async {
+    final db = await init();
+    int i = await db.delete(table, where: "${this.id} = ?", whereArgs: [id]);
+    return i > 0;
+  }
 }

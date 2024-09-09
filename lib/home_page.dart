@@ -183,7 +183,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => setState(() async {
+                  await db.deleteTask(note.id);
+                  setState(() {});
+                }),
                 icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
