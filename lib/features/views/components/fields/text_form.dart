@@ -22,7 +22,7 @@ class NFormField extends StatelessWidget {
   final String? suffix;
   final TextInputType? keyboard;
   final bool hideText;
-  final Function()? toggleSuffix;
+  final void Function()? toggleSuffix;
   final double height;
   final AlignmentGeometry alignment;
   final int? maxLines;

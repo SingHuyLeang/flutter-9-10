@@ -1,13 +1,14 @@
 import 'dart:developer';
 
+import 'package:note_app/features/model/user.dart';
 import 'package:sqflite/sqflite.dart';
 
-class UserDatabase {
-  final String database = "user.db";
-  final String table = "users";
-  final String id = "id";
-  final String username = "username";
-  final String password = "password";
+interface class UserDatabase {
+  String database = "user.db";
+  String table = "users";
+  String id = "id";
+  String username = "username";
+  String password = "password";
 
   Future<Database> init() async {
     late Database db;
@@ -23,9 +24,19 @@ class UserDatabase {
           );
         },
       );
-    } catch (e) {
-      log("init db : $e");
+    } on DatabaseException catch (e) {
+      log("error init database : $e");
     }
     return db;
+  }
+
+  Future<bool> createUser(User user) async {
+    try {
+      final db = await init();
+      return await db.insert(table, user.toMap()) > 0;
+    } on DatabaseException catch (e) {
+      log("on create user : $e");
+    }
+    return false;
   }
 }
