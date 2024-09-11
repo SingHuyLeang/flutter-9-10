@@ -60,9 +60,7 @@ class SignInScreen extends StatelessWidget {
                   const SizedBox(height: 40),
                   // button
                   NButton(
-                    onTap: () {
-                      // TODO: implement logic
-                    },
+                    onTap: () async => controller.signIn(),
                     text: "Sign In",
                     width: 180,
                   ),

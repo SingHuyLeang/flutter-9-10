@@ -39,4 +39,16 @@ interface class UserDatabase {
     }
     return false;
   }
+
+  Future<bool> signIn(User user) async {
+    try {
+      final db = await init();
+      final respone = await db.rawQuery(
+          "SELECT $id FROM $table WHERE $username = '${user.username}' AND $password = '${user.password}'");
+      return respone.isNotEmpty;
+    } on DatabaseException catch (e) {
+      log("on sign in user : $e");
+    }
+    return false;
+  }
 }

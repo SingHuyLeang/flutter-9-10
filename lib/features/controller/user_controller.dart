@@ -46,7 +46,8 @@ class UserController extends GetxController {
       );
       return;
     } else if (await db.createUser(
-        User(username: signUpEmailCtr.text, password: signUpPassCtr.text))) {
+      User(username: signUpEmailCtr.text, password: signUpPassCtr.text),
+    )) {
       Get.snackbar(
         'Note App',
         'User created successfully',
@@ -63,5 +64,27 @@ class UserController extends GetxController {
         duration: const Duration(seconds: 2),
       );
     }
+  }
+
+  Future<void> signIn() async {
+    if (signInEmailCtr.text.isEmpty || signInPassCtr.text.isEmpty) {
+      Get.snackbar(
+        'Note App',
+        'All fields are required',
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    } else if (await db.signIn(
+        User(username: signInEmailCtr.text, password: signInPassCtr.text))) {
+      Get.snackbar(
+        'Note App',
+        'User logged in successfully',
+        duration: const Duration(seconds: 2),
+      );
+      signInEmailCtr.clear();
+      signInPassCtr.clear();
+      Get.to(() => HomeScreen());
+    }
+    update();
   }
 }
