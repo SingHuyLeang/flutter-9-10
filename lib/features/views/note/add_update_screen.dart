@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:note_app/context/context.dart';
+import 'package:note_app/features/controller/note_controller.dart';
 import 'package:note_app/features/views/components/widgets/text.dart';
 import 'package:note_app/util/theme/colors.dart';
 
 import '../components/fields/text_form.dart';
 
-class AddAndUpdateScreen extends StatefulWidget {
-  const AddAndUpdateScreen({super.key});
+class AddAndUpdateScreen extends StatelessWidget {
+  AddAndUpdateScreen({super.key});
 
-  @override
-  State<AddAndUpdateScreen> createState() => _AddAndUpdateScreenState();
-}
-
-class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
-  final titleCtr = TextEditingController();
-  final contentCtr = TextEditingController();
+  final controller = Get.put(NoteController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +37,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
             // -- form --
             const SizedBox(height: 40),
             NFormField(
-              controller: titleCtr,
+              controller: controller.titleCtr,
               hint: "Enter your title",
               keyboard: TextInputType.text,
             ),
@@ -50,17 +46,20 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
               height: 400,
               maxLines: null,
               alignment: Alignment.topLeft,
-              controller: contentCtr,
+              controller: controller.contentCtr,
               hint: "Enter your content",
               keyboard: TextInputType.multiline,
             ),
           ],
         ),
       ),
-      floatingActionButton: CircleAvatar(
-        backgroundColor: primary,
-        radius: 26,
-        child: const Icon(Icons.add, color: tertiary),
+      floatingActionButton: GestureDetector(
+        onTap: () async => controller.addNote(),
+        child: CircleAvatar(
+          backgroundColor: primary,
+          radius: 26,
+          child: const Icon(Icons.add, color: tertiary),
+        ),
       ),
     );
   }

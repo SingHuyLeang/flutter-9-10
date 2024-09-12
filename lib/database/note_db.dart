@@ -1,7 +1,9 @@
+import 'dart:developer';
+
+import 'package:note_app/features/model/note.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteDatabase {
-  
   final String database = "note.db";
   final String table = "notes";
   final String id = "id";
@@ -18,5 +20,16 @@ class NoteDatabase {
       onCreate: (db, version) => db.execute(
           "CREATE TABLE IF NOT EXISTS $table ($id INTEGER PRIMARY KEY AUTOINCREMENT, $title TEXT, $content TEXT, $date TEXT, $time TEXT)"),
     );
+  }
+
+  // insert
+  Future<bool> insert(Note note) async {
+    try {
+      final db = await init();
+      return await db.insert(table, note.toMap()) > 0;
+    } on DatabaseException catch (e) {
+      log('DatabaseException caught in insert operation on $e');
+    }
+    return false;
   }
 }

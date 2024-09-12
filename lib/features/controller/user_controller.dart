@@ -84,6 +84,12 @@ class UserController extends GetxController {
       signInEmailCtr.clear();
       signInPassCtr.clear();
       Get.to(() => HomeScreen());
+    } else {
+      Get.snackbar(
+        'Note App',
+        'Invalid credentials',
+        duration: const Duration(seconds: 2),
+      );
     }
     update();
   }
