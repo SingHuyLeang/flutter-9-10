@@ -32,4 +32,16 @@ class NoteDatabase {
     }
     return false;
   }
+  // gets the note
+  Future<List<Note>> getNotes() async {
+    try {
+      final db = await init();
+      final query = "SELECT * FROM $table ORDER BY $date DESC, $time DESC";
+      final rows = await db.rawQuery(query);
+      return rows.map((row) => Note.fromMap(row)).toList();
+    } on DatabaseException catch (e) {
+      log('DatabaseException caught in getNotes operation on $e');
+    }
+    return [];
+  }
 }

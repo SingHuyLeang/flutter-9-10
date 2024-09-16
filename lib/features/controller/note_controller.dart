@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app/database/note_db.dart';
@@ -6,8 +8,6 @@ import 'package:note_app/util/helper/dt.dart';
 
 class NoteController extends GetxController {
   final db = NoteDatabase();
-  // final stream = Stream.fromFuture();
-
   final titleCtr = TextEditingController();
   final contentCtr = TextEditingController();
 
@@ -26,5 +26,17 @@ class NoteController extends GetxController {
     } else {
       Get.snackbar("Note App", "Failed to save note");
     }
+  }
+
+  // get the notes
+  Future<List<Note>> getNotes() async {
+    await db.getNotes().then((value) => value.forEach((note) {
+          log("id      : ${note.id}");
+          log("title   : ${note.title}");
+          log("content : ${note.content}");
+          log("date    : ${note.date}");
+          log("time    : ${note.time}");
+        }));
+    return await db.getNotes();
   }
 }
