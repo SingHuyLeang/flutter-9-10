@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app/database/note_db.dart';
@@ -10,6 +8,20 @@ class NoteController extends GetxController {
   final db = NoteDatabase();
   final titleCtr = TextEditingController();
   final contentCtr = TextEditingController();
+
+  final notes = <Note>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    reload();
+  }
+
+  Future<void> reload() async {
+    notes.clear();
+    notes.addAll(await getNotes());
+    update();
+  }
 
   Future<void> addNote() async {
     if (titleCtr.text.isEmpty || contentCtr.text.isEmpty) {
@@ -29,14 +41,5 @@ class NoteController extends GetxController {
   }
 
   // get the notes
-  Future<List<Note>> getNotes() async {
-    await db.getNotes().then((value) => value.forEach((note) {
-          log("id      : ${note.id}");
-          log("title   : ${note.title}");
-          log("content : ${note.content}");
-          log("date    : ${note.date}");
-          log("time    : ${note.time}");
-        }));
-    return await db.getNotes();
-  }
+  Future<List<Note>> getNotes() async => await db.getNotes();
 }
