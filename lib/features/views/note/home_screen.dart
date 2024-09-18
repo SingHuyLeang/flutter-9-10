@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:note_app/context/context.dart';
 import 'package:note_app/features/controller/note_controller.dart';
@@ -57,7 +59,80 @@ class HomeScreen extends StatelessWidget {
               itemCount: controller.notes.length,
               itemBuilder: (context, index) {
                 final note = controller.notes[index];
-                return noteCard(note);
+                return noteCard(
+                  note,
+                  onLongTap: () {
+                    Get.bottomSheet(
+                      isDismissible: true,
+                      enableDrag: true,
+                      DraggableScrollableSheet(
+                        initialChildSize: 0.3,
+                        minChildSize: 0.1,
+                        maxChildSize: 0.5,
+                        builder: (_, scrollController) => Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: const BoxDecoration(
+                            color: secondary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          child: ListView(
+                            controller: scrollController,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  controller.deleteNote(index);
+                                  Get.back();
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      width: 1.5,
+                                      color: const Color(0xFFFFF4F4),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: const NText(
+                                    text: "Delete",
+                                    color: Colors.red,
+                                    font: 'bold',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              GestureDetector(
+                                onTap: () => Get.back(),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      width: 1.5,
+                                      color: const Color(0xFFFFF4F4),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: const NText(
+                                    text: "Cancel",
+                                    font: 'bold',
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             );
           }

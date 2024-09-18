@@ -32,6 +32,7 @@ class NoteDatabase {
     }
     return false;
   }
+
   // gets the note
   Future<List<Note>> getNotes() async {
     try {
@@ -43,5 +44,23 @@ class NoteDatabase {
       log('DatabaseException caught in getNotes operation on $e');
     }
     return [];
+  }
+
+  // deletes the note
+  Future<bool> deleteNote(Note note) async {
+    final db = await init();
+    try {
+      return await db.delete(
+            table,
+            where: "$id = ?",
+            whereArgs: [note.id.toString()],
+          ) >
+          0;
+    } on DatabaseException catch (e) {
+      log('DatabaseException caught in delete operation on $e');
+    } finally {
+      await db.close();
+    }
+    return false;
   }
 }

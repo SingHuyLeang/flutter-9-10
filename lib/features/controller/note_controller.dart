@@ -42,4 +42,14 @@ class NoteController extends GetxController {
 
   // get the notes
   Future<List<Note>> getNotes() async => await db.getNotes();
+
+  // delete the notes
+  Future<void> deleteNote(int index) async {
+    if (await db.deleteNote(notes[index])) {
+      Get.snackbar("Note App", "Note deleted successfully");
+      notes.removeAt(index);
+    } else {
+      Get.snackbar("Note App", "Failed to delete note");
+    }
+  }
 }
