@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:note_app/context/context.dart';
 import 'package:note_app/features/controller/note_controller.dart';
@@ -61,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                 final note = controller.notes[index];
                 return noteCard(
                   note,
+                  onTap: ()=> controller.toUpdate(index),
                   onLongTap: () {
                     Get.bottomSheet(
                       isDismissible: true,

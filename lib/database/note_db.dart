@@ -63,4 +63,26 @@ class NoteDatabase {
     }
     return false;
   }
+
+  // updates the note
+  Future<bool> updateNote(int oldId, Note newNote) async {
+    try {
+      final db = await init();
+      return await db.update(
+            table,
+            {
+              title: newNote.title,
+              content: newNote.content,
+              date: newNote.date,
+              time: newNote.time,
+            },
+            where: "$id = ?",
+            whereArgs: [oldId.toString()],
+          ) >
+          0;
+    } on DatabaseException catch (e) {
+      log('DatabaseException caught in update operation on $e');
+    }
+    return false;
+  }
 }
