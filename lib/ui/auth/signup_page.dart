@@ -1,4 +1,5 @@
 import 'package:firebase_app/ui/auth/controller.dart';
+import 'package:firebase_app/ui/components/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,11 +14,11 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Sign Up',
               style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
             ),
@@ -44,11 +45,7 @@ class SignUpPage extends StatelessWidget {
             const SizedBox(height: 16),
             CupertinoButton(
               color: Theme.of(context).colorScheme.primary,
-              onPressed: () => authCtr.signup().then((value) {
-                const AlertDialog.adaptive(
-                  content: CircularProgressIndicator.adaptive(),
-                );
-              }).whenComplete(() => Get.back()),
+              onPressed: () => authCtr.signup(),
               child: const Text("Sign Up"),
             )
           ],
