@@ -1,11 +1,10 @@
 import 'package:firebase_app/ui/auth/controller.dart';
-import 'package:firebase_app/ui/auth/signin_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpPage extends StatelessWidget {
-  SignUpPage({super.key});
+class SignInPage extends StatelessWidget {
+  SignInPage({super.key});
 
   final authCtr = Get.put(AuthController());
 
@@ -19,7 +18,7 @@ class SignUpPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Sign Up',
+              'Sign In',
               style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 56),
@@ -45,14 +44,9 @@ class SignUpPage extends StatelessWidget {
             const SizedBox(height: 16),
             CupertinoButton(
               color: Theme.of(context).colorScheme.primary,
-              onPressed: () => authCtr.signup(),
-              child: const Text("Sign Up"),
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () => Get.to(() => SignInPage()),
+              onPressed: () => authCtr.signin(),
               child: const Text("Sign In"),
-            ),
+            )
           ],
         ),
       ),
