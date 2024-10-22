@@ -1,6 +1,5 @@
 import 'package:firebase_app/ui/pages/controller.dart';
 import 'package:firebase_app/ui/pages/form_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +14,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: const Text('Home Page'),
       ),
-      body: SingleChildScrollView(),
+      body: const SingleChildScrollView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(() => FormProductPage()),
         child: const Icon(Icons.add),

@@ -1,4 +1,3 @@
-import 'package:firebase_app/ui/components/loading.dart';
 import 'package:firebase_app/ui/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
