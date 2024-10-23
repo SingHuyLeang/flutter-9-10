@@ -42,7 +42,6 @@ class AuthController extends GetxController {
           password: password,
         );
         if (userCredentail.user != null) {
-          Get.snackbar("Authentication", "Successfully");
           Get.to(() => HomePage());
         }
       } catch (e) {

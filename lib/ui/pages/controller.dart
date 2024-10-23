@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/data/product.dart';
 import 'package:firebase_app/firebase/firestore.dart';
 import 'package:firebase_app/firebase/storage.dart';
@@ -22,7 +24,7 @@ class AppController extends GetxController {
         qtyCtr.text.isEmpty ||
         priceCtr.text.isEmpty ||
         discountCtr.text.isEmpty ||
-        imageUrlCtr.text.isEmpty) {
+        imageFile.value.isEmpty) {
       Get.snackbar("Notication", "All fields are required!");
     } else {
       await firestore.add(Product(
@@ -30,7 +32,7 @@ class AppController extends GetxController {
         qty: int.parse(qtyCtr.text),
         price: double.parse(priceCtr.text),
         discount: double.parse(discountCtr.text),
-        image: imageUrlCtr.text,
+        image: await storage.add(File(imageFile.value)),
       ));
     }
   }
@@ -40,7 +42,6 @@ class AppController extends GetxController {
     final xfile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (xfile != null) {
       imageFile.value = xfile.path;
-      await storage.add(File(imageFile.value));
     }
     update();
   }

@@ -49,12 +49,14 @@ class FormProductPage extends StatelessWidget {
                 Input(controller: appCtr.priceCtr, label: "Price"),
                 const SizedBox(height: 16),
                 Input(controller: appCtr.discountCtr, label: "Discount"),
-                const SizedBox(height: 16),
-                Input(controller: appCtr.imageUrlCtr, label: "Image URL"),
               ],
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => appCtr.addProduct(),
+        child: const Icon(Icons.add),
       ),
     );
   }

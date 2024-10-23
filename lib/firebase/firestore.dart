@@ -5,6 +5,9 @@ import 'package:firebase_app/data/product.dart';
 
 class Firestore {
   final firestore = FirebaseFirestore.instance.collection("products");
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> get firestoreSnapshots => firestore.snapshots();
+
   Future<void> add(Product product) async {
     try {
       await firestore.doc().set(product.toJson()).onError((error, stackTrace) =>
