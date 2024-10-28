@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app/data/product.dart';
+import 'package:firebase_app/ui/components/product_card.dart';
 import 'package:firebase_app/ui/pages/controller.dart';
 import 'package:firebase_app/ui/pages/form_page.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Home Page'),
@@ -29,14 +34,15 @@ class HomePage extends StatelessWidget {
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else {
-              final data = snapshot.data!.docs ;
+              final data = snapshot.data!.docs;
 
               return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index) {
-                  final doc = snapshot.data!.docs[index];
-                  return ListTile(
-                    title: Text(doc['name'] as String),
+                  return ProductCard(
+                    product: Product.fromJson(
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>,
+                    ),
                   );
                 },
               );

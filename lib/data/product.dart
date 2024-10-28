@@ -16,7 +16,6 @@ class Product {
   });
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
         "qty": qty,
         "price": price,
@@ -25,11 +24,15 @@ class Product {
       };
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"] as int?,
-        name: json["name"] as String,
-        qty: json["qty"] as int,
-        price: json["price"] as double,
-        discount: json["discount"] as double,
-        image: json["image"] as String,
+        id: json["id"],
+        name: json["name"],
+        qty: json["qty"],
+        price: (json["price"] is int)
+            ? (json["price"] as int).toDouble()
+            : json["price"] as double,
+        discount: (json["discount"] is int)
+            ? (json["discount"] as int).toDouble()
+            : json["discount"] as double,
+        image: json["image"],
       );
 }
