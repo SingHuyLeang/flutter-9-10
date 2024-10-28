@@ -40,6 +40,7 @@ class HomePage extends StatelessWidget {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   return ProductCard(
+                    docId: snapshot.data!.docs[index].id,
                     product: Product.fromJson(
                       snapshot.data!.docs[index].data() as Map<String, dynamic>,
                     ),

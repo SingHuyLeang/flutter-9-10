@@ -34,6 +34,8 @@ class AppController extends GetxController {
         discount: double.parse(discountCtr.text),
         image: await storage.add(File(imageFile.value)),
       ));
+      Get.snackbar("Notification", "Product added successfully!");
+      clears();
     }
   }
 
@@ -44,5 +46,14 @@ class AppController extends GetxController {
       imageFile.value = xfile.path;
     }
     update();
+  }
+
+  void clears() {
+    nameCtr.clear();
+    qtyCtr.clear();
+    priceCtr.clear();
+    discountCtr.clear();
+    imageUrlCtr.clear();
+    imageFile.value = "";
   }
 }

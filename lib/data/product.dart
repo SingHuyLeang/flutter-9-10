@@ -1,5 +1,4 @@
 class Product {
-  int? id;
   String name;
   int qty;
   double price;
@@ -7,7 +6,6 @@ class Product {
   String image;
 
   Product({
-    this.id,
     required this.name,
     required this.qty,
     required this.price,
@@ -24,7 +22,6 @@ class Product {
       };
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"],
         name: json["name"],
         qty: json["qty"],
         price: (json["price"] is int)
