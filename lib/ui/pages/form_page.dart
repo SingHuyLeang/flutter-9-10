@@ -10,19 +10,23 @@ class FormProductPage extends StatelessWidget {
   final appCtr = Get.put(AppController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Product Form'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Obx(
-            () => Column(
+    return Obx(
+      () => Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => appCtr.back(),
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: const Text('Product Form'),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
               children: [
                 GestureDetector(
-                  onTap: () async => await appCtr.pickImage(),
+                  onTap: () async => appCtr.pickImage(),
                   child: Container(
                     width: double.infinity,
                     height: 300,
@@ -32,12 +36,16 @@ class FormProductPage extends StatelessWidget {
                         color: Colors.grey.shade400,
                         width: 1.5,
                       ),
-                      image: appCtr.imageFile.value.isNotEmpty
+                      image: appCtr.tempImageURL.value.isNotEmpty
                           ? DecorationImage(
-                              image: FileImage(File(appCtr.imageFile.value)))
-                          : const DecorationImage(
-                              image: AssetImage("assets/images/image.png"),
-                            ),
+                              image: NetworkImage(appCtr.tempImageURL.value))
+                          : appCtr.imageFile.value.isNotEmpty
+                              ? DecorationImage(
+                                  image:
+                                      FileImage(File(appCtr.imageFile.value)))
+                              : const DecorationImage(
+                                  image: AssetImage("assets/images/image.png"),
+                                ),
                     ),
                   ),
                 ),
@@ -53,10 +61,12 @@ class FormProductPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => appCtr.addProduct(),
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => appCtr.isUpdate.value
+              ? appCtr.updateProduct()
+              : appCtr.addProduct(),
+          child: Icon(appCtr.isUpdate.value ? Icons.edit : Icons.add),
+        ),
       ),
     );
   }

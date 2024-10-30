@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/data/product.dart';
 import 'package:firebase_app/ui/components/product_card.dart';
@@ -40,7 +38,14 @@ class HomePage extends StatelessWidget {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   return ProductCard(
-                    docId: snapshot.data!.docs[index].id,
+                    onTap: () => controller.navigateToUpdate(
+                      snapshot.data!.docs[index].id,
+                      Product.fromJson(
+                        snapshot.data!.docs[index].data()
+                            as Map<String, dynamic>,
+                      ),
+                    ),
+                    onLongPress: () {},
                     product: Product.fromJson(
                       snapshot.data!.docs[index].data() as Map<String, dynamic>,
                     ),
