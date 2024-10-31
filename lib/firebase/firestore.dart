@@ -28,4 +28,13 @@ class Firestore {
       log("Exception update product to firestore: ${e.message}");
     }
   }
+
+  Future<void> delete(String id) async {
+    try {
+      await firestore.doc(id).delete().onError((error, stackTrace) =>
+          log("Error delete product from firestore: $error: $stackTrace"));
+    } on FirebaseException catch (e) {
+      log("Exception delete product to firestore: ${e.message}");
+    }
+  }
 }

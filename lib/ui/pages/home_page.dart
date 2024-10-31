@@ -19,41 +19,42 @@ class HomePage extends StatelessWidget {
         title: const Text('Home Page'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: controller.firestore.firestoreSnapshots,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: Icon(Icons.error, size: 32, color: Colors.red),
-              );
-            } else if (!snapshot.hasData) {
-              return const Center(
-                child: Text('No documents found'),
-              );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              final data = snapshot.data!.docs;
+        stream: controller.firestore.firestoreSnapshots,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Icon(Icons.error, size: 32, color: Colors.red),
+            );
+          } else if (!snapshot.hasData) {
+            return const Center(
+              child: Text('No documents found'),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else {
+            final data = snapshot.data!.docs;
 
-              return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return ProductCard(
-                    onTap: () => controller.navigateToUpdate(
-                      snapshot.data!.docs[index].id,
-                      Product.fromJson(
-                        snapshot.data!.docs[index].data()
-                            as Map<String, dynamic>,
-                      ),
-                    ),
-                    onLongPress: () {},
-                    product: Product.fromJson(
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return ProductCard(
+                  onTap: () => controller.navigateToUpdate(
+                    snapshot.data!.docs[index].id,
+                    Product.fromJson(
                       snapshot.data!.docs[index].data() as Map<String, dynamic>,
                     ),
-                  );
-                },
-              );
-            }
-          }),
+                  ),
+                  onLongPress: () =>
+                      controller.deleteProduct(snapshot.data!.docs[index].id),
+                  product: Product.fromJson(
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>,
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(() => FormProductPage()),
         child: const Icon(Icons.add),

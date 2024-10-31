@@ -27,4 +27,13 @@ class FireStorage {
       rethrow;
     }
   }
+
+  Future<void> delete(String path) async {
+    try {
+      await storage.refFromURL(path).delete();
+    } on FirebaseException catch (e) {
+      log("Error deleting file: $e");
+      rethrow;
+    }
+  }
 }

@@ -99,6 +99,13 @@ class AppController extends GetxController {
     isUpdate = true.obs;
   }
 
+  // delete
+  Future<void> deleteProduct(String docId) async {
+    await firestore
+        .delete(docId)
+        .whenComplete(() => log("Successfully deleted"));
+  }
+
   // back navigation
   void back() async {
     Get.back();
